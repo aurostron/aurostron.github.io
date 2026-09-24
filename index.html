@@ -3,19 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>AUROSTRON — Hobby Dev</title>
+  <title>AUROSTRON</title>
   <meta name="description" content="I'm Aurostron. I build things for the web — games, experiments, and interactive experiences. Creator of hoGAMEGATA.">
   <meta name="keywords" content="AUROSTRON, hoGAMEGATA, Developer, Creative Coding, Interactive Web, Portfolio, JavaScript">
   <meta name="author" content="AUROSTRON">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://aurostron.github.io/">
-  <meta property="og:title" content="AUROSTRON — Developer & Creator">
+  <meta property="og:title" content="AUROSTRON Hobby Developer & Creator">
   <meta property="og:description" content="Building things for the web. Creator of hoGAMEGATA.">
   <meta property="og:site_name" content="AUROSTRON">
   <meta property="og:image" content="https://aurostron.github.io/pfp.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://aurostron.github.io/pfp.jpg">
   <meta name="theme-color" content="#080808">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23080808'/><text x='50' y='68' font-family='sans-serif' font-weight='900' font-size='56' fill='%23ffffff' text-anchor='middle'>A</text></svg>">
 
@@ -63,17 +64,41 @@
       background: var(--bg);
       color: var(--ink);
       font-family: var(--font);
-      overflow-x: hidden;
-      scroll-behavior: smooth;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.18) #080808;
     }
 
     body {
-      overflow-x: hidden;
+      overflow-x: clip;
       min-height: 100vh;
       background: var(--bg);
       position: relative;
+    }
+
+    /* Clean Dark Seamless Scrollbar (Replaces bright default browser scrollbar) */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+      background: #080808;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #080808;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.38);
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: #080808;
     }
 
     ::selection {
@@ -92,8 +117,8 @@
     #bg-canvas {
       position: fixed;
       inset: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 0;
       opacity: 0.85;
@@ -117,7 +142,7 @@
     }
 
     /* ─────────────────────────────────────────────────────────────
-       SCROLL PROGRESS LINE
+       SCROLL PROGRESS LINE & DROP TRANSITION OVERLAYS
     ───────────────────────────────────────────────────────────── */
     .progress-line {
       position: fixed;
@@ -132,15 +157,6 @@
       will-change: transform;
     }
 
-    @supports (animation-timeline: scroll()) {
-      .progress-line {
-        animation: grow-line linear both;
-        animation-timeline: scroll(root block);
-      }
-      @keyframes grow-line {
-        to { transform: scaleX(1); }
-      }
-    }
 
     /* ─────────────────────────────────────────────────────────────
        NAV
@@ -156,9 +172,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 clamp(1.4rem, 5vw, 4rem);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      background: rgba(8, 8, 8, 0.7);
+      background: rgba(8, 8, 8, 0.98);
       border-bottom: 1px solid var(--border-dim);
       transition: border-color 0.3s var(--ease-fluid), background 0.3s var(--ease-fluid);
     }
@@ -260,14 +274,13 @@
     .hero {
       position: relative;
       z-index: 10;
-      min-height: 100svh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 130px clamp(1.4rem, 5vw, 4rem) 5rem;
       text-align: center;
-      overflow: hidden;
     }
 
     .hero-inner {
@@ -390,11 +403,10 @@
       filter: blur(8px);
     }
 
-    /* ─── EDITORIAL AUTO-HIGHLIGHT LINE ─── */
+    /* ─── EDITORIAL PERMANENT HIGHLIGHT BLOCK ─── */
     .hl-highlight-wrap {
       position: relative;
       display: inline-block;
-      cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
     }
@@ -402,8 +414,8 @@
     .hl-outline-base {
       display: block;
       color: transparent;
-      -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.4);
-      transition: -webkit-text-stroke 0.3s;
+      visibility: hidden;
+      user-select: none;
     }
 
     .hl-highlight-reveal {
@@ -416,9 +428,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      clip-path: inset(0 100% 0 0);
-      animation: sweepHighlight 4.8s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-      will-change: clip-path;
       pointer-events: none;
     }
 
@@ -438,8 +447,8 @@
     .hl-char {
       display: inline-block;
       transform-origin: center 80%;
-      animation: charWave 4.8s cubic-bezier(0.33, 1, 0.68, 1) infinite;
-      animation-delay: calc(var(--i, 0) * 0.035s);
+      animation: charWave 3.6s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+      animation-delay: calc(var(--i, 0) * 0.045s);
       will-change: transform;
     }
 
@@ -448,58 +457,20 @@
       width: 0.24em;
     }
 
-    .hl-highlight-wrap:hover .hl-highlight-reveal {
-      clip-path: inset(0 0 0 0) !important;
-      animation-play-state: paused;
-    }
-
-    @keyframes sweepHighlight {
-      0%, 4% {
-        clip-path: inset(0 100% 0 0);
-        opacity: 1;
-      }
-      26%, 58% {
-        clip-path: inset(0 0% 0 0);
-        opacity: 1;
-      }
-      /* Organic micro-flicker right before reverse sweep begins */
-      59.5% {
-        clip-path: inset(0 0% 0 0);
-        opacity: 0.35;
-      }
-      61% {
-        clip-path: inset(0 0% 0 0);
-        opacity: 0.95;
-      }
-      62.5% {
-        clip-path: inset(0 0% 0 0);
-        opacity: 0.15;
-      }
-      64% {
-        clip-path: inset(0 0% 0 0);
-        opacity: 1;
-      }
-      /* Smooth reverse sweep back to left */
-      88%, 100% {
-        clip-path: inset(0 100% 0 0);
-        opacity: 1;
-      }
-    }
-
     @keyframes charWave {
-      0%, 28% {
+      0%, 25% {
         transform: translateY(0) rotate(0deg) scale(1);
       }
       35% {
-        transform: translateY(-11%) rotate(-1.6deg) scale(1.02);
+        transform: translateY(-12%) rotate(-2deg) scale(1.02);
       }
-      42% {
-        transform: translateY(6%) rotate(1.1deg) scale(0.99);
+      45% {
+        transform: translateY(6%) rotate(1.4deg) scale(0.99);
       }
-      49% {
-        transform: translateY(-3%) rotate(-0.4deg);
+      55% {
+        transform: translateY(-3%) rotate(-0.5deg);
       }
-      56%, 100% {
+      65%, 100% {
         transform: translateY(0) rotate(0deg) scale(1);
       }
     }
@@ -557,6 +528,7 @@
       50% { opacity: 1; transform: scaleY(1); }
     }
 
+
     /* ─────────────────────────────────────────────────────────────
        SHARED SECTION STYLING
     ───────────────────────────────────────────────────────────── */
@@ -566,8 +538,6 @@
       padding: clamp(5.5rem, 12vh, 10rem) clamp(1.4rem, 5vw, 4rem);
       max-width: 1300px;
       margin: 0 auto;
-      content-visibility: auto;
-      contain-intrinsic-size: 800px;
     }
 
     .section-label {
@@ -751,17 +721,16 @@
 
     .work-item {
       display: grid;
-      grid-template-columns: 4.5rem 1fr auto;
+      grid-template-columns: 3.5rem minmax(280px, 1fr) minmax(360px, 1.25fr);
       align-items: center;
-      gap: 2.5rem;
-      padding: 3rem 1.5rem;
+      gap: 3.5rem;
+      padding: 3.5rem 1.5rem;
       border-bottom: 1px solid var(--border-dim);
       cursor: pointer;
       text-decoration: none;
       color: var(--ink);
       position: relative;
-      overflow: hidden;
-      border-radius: 12px;
+      border-radius: 16px;
       opacity: 0;
       transform: translateY(28px);
       transition:
@@ -789,7 +758,7 @@
 
     .work-item:hover {
       border-bottom-color: var(--border);
-      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.015);
     }
 
     .work-item:hover::before {
@@ -798,10 +767,12 @@
 
     .work-num {
       font-family: var(--mono);
-      font-size: 0.76rem;
+      font-size: 0.8rem;
       color: var(--ink-3);
       letter-spacing: 0.1em;
       transition: color 0.3s;
+      align-self: flex-start;
+      padding-top: 0.4rem;
     }
 
     .work-item:hover .work-num {
@@ -811,29 +782,46 @@
     .work-info {
       display: flex;
       flex-direction: column;
-      gap: 0.45rem;
+      gap: 0.75rem;
+    }
+
+    .work-title-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
     }
 
     .work-title {
-      font-size: clamp(1.6rem, 3.2vw, 2.8rem);
+      font-size: clamp(1.8rem, 3.2vw, 2.8rem);
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.1;
       transition: color 0.3s var(--ease-fluid);
     }
 
+    .work-arrow {
+      font-size: 1.6rem;
+      color: var(--ink-3);
+      transition: transform 0.35s var(--ease-fluid), color 0.3s;
+      line-height: 1;
+    }
+
+    .work-item:hover .work-arrow {
+      transform: translate(5px, -5px);
+      color: var(--ink);
+    }
+
     .work-desc {
       font-size: 0.95rem;
       color: var(--ink-2);
-      max-width: 540px;
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
     .work-tags {
       display: flex;
       gap: 0.55rem;
       flex-wrap: wrap;
-      margin-top: 0.5rem;
+      margin-top: 0.25rem;
     }
 
     .work-tag {
@@ -854,17 +842,63 @@
       color: var(--ink);
     }
 
-    .work-arrow {
-      font-size: 1.7rem;
-      color: var(--ink-3);
-      transition: transform 0.35s var(--ease-fluid), color 0.3s;
-      line-height: 1;
-      padding-right: 0.5rem;
+    /* ─── 3D PERSPECTIVE PREVIEW STAGE ─── */
+    .work-preview-stage {
+      perspective: 1200px;
+      perspective-origin: 50% 50%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 1rem 0;
+      overflow: visible;
     }
 
-    .work-item:hover .work-arrow {
-      transform: translate(6px, -6px);
-      color: var(--ink);
+    .work-card-3d {
+      position: relative;
+      width: 100%;
+      max-width: 540px;
+      aspect-ratio: 16 / 10;
+      border-radius: 0;
+      transform-style: preserve-3d;
+      transform: perspective(1200px) rotateY(-18deg) rotateX(10deg) rotateZ(-2deg);
+      will-change: transform;
+      background: #08080b;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow:
+        -18px 24px 38px rgba(0, 0, 0, 0.8),
+        -4px 6px 14px rgba(0, 0, 0, 0.5);
+      transition:
+        box-shadow 0.4s var(--ease-fluid),
+        border-color 0.4s var(--ease-fluid);
+    }
+
+    .work-item:hover .work-card-3d {
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow:
+        -24px 32px 50px rgba(0, 0, 0, 0.9),
+        -6px 8px 18px rgba(0, 0, 0, 0.6);
+    }
+
+    .work-card-frame {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      overflow: hidden;
+      background: #08080b;
+      position: relative;
+    }
+
+    .work-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 0;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translateZ(0);
     }
 
     /* ─────────────────────────────────────────────────────────────
@@ -934,9 +968,21 @@
         padding-top: 0.5rem;
       }
       .work-item {
-        grid-template-columns: 3.5rem 1fr auto;
-        gap: 1.5rem;
-        padding: 2.2rem 0.5rem;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2.5rem 1rem;
+      }
+      .work-num {
+        display: inline-block;
+        margin-bottom: 0.2rem;
+      }
+      .work-preview-stage {
+        justify-content: center;
+        padding: 1rem 0;
+      }
+      .work-card-3d {
+        max-width: 440px;
+        transform: perspective(1000px) rotateY(-10deg) rotateX(8deg) rotateZ(-1deg);
       }
       .nav-links {
         display: none;
@@ -948,10 +994,14 @@
         padding-top: 110px;
       }
       .work-item {
-        grid-template-columns: 1fr auto;
+        grid-template-columns: 1fr;
+        padding: 2rem 0.5rem;
       }
-      .work-num {
-        display: none;
+      .work-card-3d {
+        transform: perspective(800px) rotateY(-6deg) rotateX(6deg);
+        box-shadow:
+          -12px 16px 28px rgba(0, 0, 0, 0.7),
+          0 0 0 1px rgba(255, 255, 255, 0.12);
       }
       .avatar-card-wrap {
         max-width: 220px;
@@ -980,12 +1030,15 @@
         transform: none;
         transition: none;
       }
-      .avatar-card {
+      .avatar-card, .work-card-3d {
         transform: none !important;
         transition: none !important;
       }
       .avatar-glare {
         display: none !important;
+      }
+      .work-card-img {
+        transform: none !important;
       }
       .hl-highlight-reveal {
         animation: none !important;
@@ -1022,7 +1075,7 @@
   <nav class="nav" id="mainNav" aria-label="Site navigation">
     <a href="#" class="nav-brand" aria-label="AUROSTRON homepage">
       <span class="nav-brand-name">AUROSTRON</span>
-      <span class="nav-brand-sub">Beginner developer &amp; creator</span>
+      <span class="nav-brand-sub">HOBBY FULL STACK WEB DEVELOPER</span>
     </a>
     <div class="nav-links" role="list">
       <a href="#about" class="nav-link" role="listitem">About</a>
@@ -1036,18 +1089,18 @@
   ─────────────────────────────────────────────────────────────── -->
   <section class="hero" id="home" aria-label="Introduction">
     <div class="hero-inner">
-      <p class="hero-tag">↳ AUROSTRON.GITHUB.IO</p>
+      
 
-      <h1 class="hero-headline">
-        <span class="hl-line">
+      <h1 class="hero-headline" id="heroHeadline">
+        <span class="hl-line hl-line-top" id="heroLineTop">
           <span class="hl-inner">I build</span>
         </span>
-        <span class="hl-line hl-line-dynamic" id="heroRotatorLine" aria-live="polite">
+        <span class="hl-line hl-line-dynamic" id="heroRotatorLine">
           <span class="hl-rotator" id="heroRotator">
             <span class="hl-inner hl-phrase is-active" id="currentPhrase">for fun.</span>
           </span>
         </span>
-        <span class="hl-line">
+        <span class="hl-line hl-line-bottom" id="heroLineBottom">
           <span class="hl-inner">
             <span class="hl-highlight-wrap" id="heroHighlight">
               <span class="hl-outline-base">For the web.</span>
@@ -1066,10 +1119,6 @@
       </p>
     </div>
 
-    <div class="scroll-cue" aria-hidden="true">
-      <span class="scroll-cue-text">SCROLL</span>
-      <div class="scroll-cue-line"></div>
-    </div>
   </section>
 
   <!-- ──────────────────────────────────────────────────────────────
@@ -1094,7 +1143,7 @@
 
       <div class="about-body">
         <p class="about-para">
-          I'm aurostron. A developer who got hooked on making things interactive, then never stopped. My work lives mostly in the browser — <strong>games, experiments, visual tools</strong> — stuff that gives people something to do, or at least something to have fun with.
+          I'm aurostron. I build tools and archives for the web. Lately that means projects like <strong><a href="https://gamegata.xyz" target="_blank" rel="noopener noreferrer">hoGAMEGATA</a></strong>, a 107,000-game horror database, and <strong><a href="https://openlyryc.pages.dev" target="_blank" rel="noopener noreferrer">OpenLyryc</a></strong>, an in-browser lyric and karaoke timer. I make things that run fast, work right in the tab, and don't require an account or show ads.
         </p>
 
         <blockquote class="pull-quote about-para">
@@ -1102,11 +1151,11 @@
         </blockquote>
 
         <p class="about-para">
-          I built <strong><a href="https://gamegata.xyz" target="_blank" rel="noopener noreferrer">hoGAMEGATA</a></strong> as a minimalist, fast database made with ❤️ for horror games. It catalogs over 18,000 titles. No ads, no paywalls, or tracking shit. Just a pure discovery tool for horror fans.
+          Most of my projects start from personal curiosity or simple frustration with existing software — clunky interfaces, heavy sign-up walls, or lost media that never got cataloged. The goal is always the same: keep things lightweight, private, and open for anyone to use.
         </p>
 
         <p class="about-para">
-          Outside of that, I am exploring stuff. Different tools, different ideas, different aesthetics. The internet is huge and weird and <strong>full of things worth trying</strong>. My projects are one of them :)
+          Outside of those, I'm usually experimenting with new web APIs, tinkering with creative code, and seeing what else can run cleanly inside a browser tab.
         </p>
       </div>
     </div>
@@ -1121,31 +1170,53 @@
     <div class="section-label">What I've built</div>
     <nav class="work-list" aria-label="Project list">
 
-      <a class="work-item" href="https://gamegata.xyz" target="_blank" rel="noopener noreferrer">
+      <a class="work-item" href="https://gamegata.xyz" target="_blank" rel="noopener noreferrer" data-tilt-stage>
         <span class="work-num">01</span>
         <div class="work-info">
-          <h3 class="work-title">hoGAMEGATA</h3>
-          <p class="work-desc">An ad-free database and discovery tool for horror games. Tracks over 18,000 titles with unified ratings, built for privacy and speed.</p>
+          <div class="work-title-wrap">
+            <h3 class="work-title">hoGAMEGATA</h3>
+            <span class="work-arrow" aria-hidden="true">↗</span>
+          </div>
+          <p class="work-desc">Open-core discovery and preservation database for horror video games. Indexes over 107,000 titles, 68,000 developers, and 15,800 tags with instant client-side search. Free, ad-free, and requires no account.</p>
           <div class="work-tags">
             <span class="work-tag">Astro</span>
-            <span class="work-tag">React</span>
+            <span class="work-tag">Cloudflare Workers</span>
+            <span class="work-tag">Turso</span>
             <span class="work-tag">Drizzle ORM</span>
+            <span class="work-tag">React</span>
           </div>
         </div>
-        <span class="work-arrow">↗</span>
+        <div class="work-preview-stage" aria-hidden="true">
+          <div class="work-card-3d" data-card-3d>
+            <div class="work-card-frame">
+              <img src="hogamegata.png" alt="hoGAMEGATA interface preview" class="work-card-img" width="2560" height="1600" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
       </a>
 
-      <a class="work-item" href="https://project-hgg.github.io" target="_blank" rel="noopener noreferrer">
+      <a class="work-item" href="https://openlyryc.pages.dev" target="_blank" rel="noopener noreferrer" data-tilt-stage>
         <span class="work-num">02</span>
         <div class="work-info">
-          <h3 class="work-title">Project HGG</h3>
-          <p class="work-desc">Backup and archive of the hoGAMEGATA.</p>
+          <div class="work-title-wrap">
+            <h3 class="work-title">OpenLyryc</h3>
+            <span class="work-arrow" aria-hidden="true">↗</span>
+          </div>
+          <p class="work-desc">Browser-native synced lyric workstation. Word-by-word karaoke sync, live stage prompter visualizer, and LRCLIB integration, exporting clean files to Enhanced LRC and Apple Music TTML. Private with local audio decoding.</p>
           <div class="work-tags">
-            <span class="work-tag">GitHub Pages</span>
-            <span class="work-tag">Open Source</span>
+            <span class="work-tag">Web Audio API</span>
+            <span class="work-tag">TypeScript</span>
+            <span class="work-tag">LRCLIB</span>
+            <span class="work-tag">Cloudflare Pages</span>
           </div>
         </div>
-        <span class="work-arrow">↗</span>
+        <div class="work-preview-stage" aria-hidden="true">
+          <div class="work-card-3d" data-card-3d>
+            <div class="work-card-frame">
+              <img src="openlyryc.png" alt="OpenLyryc interface preview" class="work-card-img" width="2560" height="1600" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
       </a>
     </nav>
   </section>
@@ -1161,8 +1232,8 @@
       </p>
       <div class="footer-links">
         <a href="https://gamegata.xyz" target="_blank" rel="noopener noreferrer">hoGAMEGATA</a>
-        <a href="https://project-hgg.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://gitfut.com/aurostron" target="_blank" rel="noopener noreferrer">Gitfut</a>
+        <a href="https://openlyryc.pages.dev" target="_blank" rel="noopener noreferrer">OpenLyryc</a>
+        <a href="https://github.com/aurostron" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a href="#home">↑ TOP</a>
       </div>
     </div>
@@ -1176,7 +1247,7 @@
     document.getElementById('yr').textContent = new Date().getFullYear();
 
     /* ────────────────────────────────────────────────────────────
-       1. SMOOTH SCROLL STATE & NAV SHADOW
+       1. SMOOTH SCROLL STATE, NAV SHADOW & ANCHOR NAVIGATION
     ──────────────────────────────────────────────────────────── */
     const S = {
       y: window.scrollY || 0,
@@ -1196,7 +1267,7 @@
 
     window.addEventListener('scroll', () => {
       const curY = window.scrollY;
-      S.targetV = curY - S.lastY;
+      S.targetV = (curY - S.lastY) * 0.4;
       S.lastY = curY;
       S.targetY = curY;
 
@@ -1206,13 +1277,25 @@
         mainNav.classList.remove('scrolled');
       }
 
-      // Fallback progress bar update if CSS animation-timeline is not supported
-      if (!CSS.supports('animation-timeline', 'scroll()')) {
-        const total = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = total > 0 ? curY / total : 0;
-        progressLine.style.transform = `scaleX(${progress})`;
-      }
+      // Progress bar update
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = total > 0 ? curY / total : 0;
+      progressLine.style.transform = `scaleX(${progress})`;
     }, { passive: true });
+
+    // Smooth scroll for anchor clicks without interfering with wheel physics
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId !== '#') {
+          const target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
 
     window.addEventListener('pointermove', (e) => {
       S.targetMouseX = e.clientX;
@@ -1225,6 +1308,7 @@
     (function bgFluidMesh() {
       const canvas = document.getElementById('bg-canvas');
       const ctx = canvas.getContext('2d', { alpha: true });
+
       let W = 0, H = 0, dpr = 1;
       let animId = null;
       let isVisible = !document.hidden;
@@ -1233,7 +1317,7 @@
         dpr = Math.min(window.devicePixelRatio || 1, 2);
         W = canvas.width = window.innerWidth * dpr;
         H = canvas.height = window.innerHeight * dpr;
-        ctx.scale(dpr, dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       };
 
       window.addEventListener('resize', resize, { passive: true });
@@ -1262,22 +1346,20 @@
         && !window.matchMedia('(hover: hover)').matches;
 
       const FOCUS_RADIUS = 200;
-      const MAX_BLUR_R   = 14;
-      const MIN_BLUR_R   = 2;
-
-      const PARTICLE_COUNT = 30;
+      const PARTICLE_COUNT = 24;
       const particles = Array.from({ length: PARTICLE_COUNT }, () => {
         const z = Math.random() * 2 - 1;
         const zSpeed = (Math.random() * 0.0006 + 0.0002) * (Math.random() < 0.5 ? 1 : -1);
-        const baseSpeed = 0.14 + Math.random() * 0.25;
+        const baseSpeed = 0.14 + Math.random() * 0.22;
         return {
           x:         Math.random() * window.innerWidth,
           y:         Math.random() * window.innerHeight,
           vx:        (Math.random() - 0.5) * baseSpeed,
-          vy:        -(Math.random() * 0.24 + 0.05),
+          vy:        -(Math.random() * 0.22 + 0.05),
           z,
           zSpeed,
           baseSpeed,
+          size:      1.2 + Math.random() * 1.6,
           pulse:     Math.random() * Math.PI * 2,
           pulseSpeed:Math.random() * 0.014 + 0.006,
           focusFactor: 0
@@ -1290,7 +1372,7 @@
         if (!isVisible) return;
 
         S.velocity += (S.targetV - S.velocity) * 0.12;
-        S.targetV *= 0.88;
+        S.targetV *= 0.85;
         S.y += (S.targetY - S.y) * 0.1;
         S.mouseX += (S.targetMouseX - S.mouseX) * 0.08;
         S.mouseY += (S.targetMouseY - S.mouseY) * 0.08;
@@ -1301,16 +1383,17 @@
 
         const width = window.innerWidth;
         const height = window.innerHeight;
-        time += 0.003 + Math.abs(S.velocity) * 0.0006;
+        time += 0.003 + Math.abs(S.velocity) * 0.0004;
+
         ctx.clearRect(0, 0, width, height);
 
-        // 1. Ambient fluid gradient blobs
-        for (let i = 0; i < 4; i++) {
+        // 1. Ambient fluid gradient blobs (lightweight)
+        for (let i = 0; i < 3; i++) {
           const nx = smoothNoise(i * 4.2 + time * 0.4, i * 1.6, i * 19);
           const ny = smoothNoise(i * 2.8, i * 5.1 + time * 0.25, i * 37);
           const nr = smoothNoise(i * 5.9 + time * 0.15, i * 3.3, i * 53);
-          const bx = nx * width  + (S.mouseX - width  / 2) * 0.05;
-          const by = ny * height + (S.mouseY - height / 2) * 0.05;
+          const bx = nx * width  + (S.mouseX - width  / 2) * 0.04;
+          const by = ny * height + (S.mouseY - height / 2) * 0.04;
           const br = (nr * 0.35 + 0.25) * Math.min(width, height) * 0.8;
           const g = ctx.createRadialGradient(bx, by, 0, bx, by, br);
           g.addColorStop(0, 'rgba(255,255,255,0.014)');
@@ -1320,23 +1403,23 @@
         }
 
         // 2. Flowing wave contours
-        for (let i = 0; i < 9; i++) {
-          const baseY = (i / 8) * height;
+        for (let i = 0; i < 7; i++) {
+          const baseY = (i / 6) * height;
           const la = 0.016 + (i % 3 === 0 ? 0.022 : 0);
           ctx.beginPath(); ctx.moveTo(0, baseY);
-          for (let x = 0; x <= width; x += 28) {
+          for (let x = 0; x <= width; x += 42) {
             const n = smoothNoise(x * 0.002 + time * 0.12 + i * 0.4, i * 0.35, 101);
             const mi = Math.exp(-Math.hypot(x - S.mouseX, baseY - S.mouseY) / 320) * 16;
-            const sw = Math.sin(x * 0.006 + S.y * 0.004 + i) * S.velocity * 0.16;
-            ctx.lineTo(x, baseY + (n - 0.5) * 46 + sw + mi);
+            const sw = Math.sin(x * 0.006 + S.y * 0.004 + i) * S.velocity * 0.12;
+            ctx.lineTo(x, baseY + (n - 0.5) * 44 + sw + mi);
           }
-          ctx.strokeStyle = `rgba(255,255,255,${la})`;
+          ctx.strokeStyle = `rgba(255,255,255,${la.toFixed(3)})`;
           ctx.lineWidth = i % 3 === 0 ? 1.0 : 0.55;
           ctx.stroke();
         }
 
         // 3. 3D Z-depth particles
-        const scrollBoost = 1 + Math.abs(S.velocity) * 0.04;
+        const scrollBoost = 1 + Math.abs(S.velocity) * 0.03;
 
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
@@ -1362,32 +1445,19 @@
           const depthFocus = Math.pow(depthT, 1.3);
           const f = Math.min(1, depthFocus * 0.7 + p.focusFactor * 0.5);
 
-          const pad = MAX_BLUR_R + 4;
+          const pad = 18;
           if (p.y < -pad) { p.y = height + pad; p.x = Math.random() * width; }
           if (p.x < -pad) p.x = width + pad;
           if (p.x > width + pad) p.x = -pad;
 
           const breathe = 0.9 + 0.15 * Math.sin(p.pulse);
-          const drawR   = MIN_BLUR_R + (MAX_BLUR_R - MIN_BLUR_R) * (1 - f);
-          const peakAlpha = (0.18 + f * 0.67) * breathe;
-
-          const edgeStop = 0.55 - f * 0.35;
-          const bokeh = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, drawR);
-          bokeh.addColorStop(0,        `rgba(255,255,255,${peakAlpha})`);
-          bokeh.addColorStop(edgeStop, `rgba(255,255,255,${peakAlpha * 0.25})`);
-          bokeh.addColorStop(1,        'transparent');
+          const alpha = Math.min(0.95, (0.12 + f * 0.5) * breathe);
+          const size = p.size * (0.8 + f * 0.8);
 
           ctx.beginPath();
-          ctx.arc(p.x, p.y, drawR, 0, Math.PI * 2);
-          ctx.fillStyle = bokeh;
+          ctx.arc(p.x, p.y, Math.max(0.2, size), 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${alpha.toFixed(2)})`;
           ctx.fill();
-
-          if (f > 0.2) {
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, drawR * 0.2 * f, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255,255,255,${Math.min(peakAlpha * 1.3, 0.95)})`;
-            ctx.fill();
-          }
         }
 
         animId = requestAnimationFrame(render);
@@ -1445,7 +1515,6 @@
       }
 
       window.addEventListener('resize', updateBounds, { passive: true });
-      window.addEventListener('scroll', updateBounds, { passive: true });
 
       card.addEventListener('mouseenter', () => {
         isHovered = true;
@@ -1531,6 +1600,112 @@
     })();
 
     /* ────────────────────────────────────────────────────────────
+       3b. 3D INTERACTIVE PROJECT PERSPECTIVE ENGINE
+    ──────────────────────────────────────────────────────────── */
+    (function projectCards3DEngine() {
+      const workItems = document.querySelectorAll('.work-item[data-tilt-stage]');
+      if (!workItems.length) return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      const isHoverCapable = window.matchMedia('(hover: hover)').matches;
+      if (!isHoverCapable) return;
+
+      workItems.forEach(item => {
+        const card = item.querySelector('[data-card-3d]');
+        if (!card) return;
+
+        const baseRotY = -18;
+        const baseRotX = 10;
+        const baseRotZ = -2;
+
+        let bounds = null;
+        let isHovered = false;
+        let isVisibleOnScreen = false;
+        let animId = null;
+
+        let targetRotX = baseRotX;
+        let targetRotY = baseRotY;
+        let targetZ = 0;
+        let curRotX = baseRotX;
+        let curRotY = baseRotY;
+        let curZ = 0;
+
+        function updateBounds() {
+          bounds = item.getBoundingClientRect();
+        }
+
+        window.addEventListener('resize', updateBounds, { passive: true });
+
+        item.addEventListener('mouseenter', () => {
+          isHovered = true;
+          targetZ = 24;
+          updateBounds();
+          startAnim();
+        });
+
+        item.addEventListener('mousemove', (e) => {
+          if (!bounds) updateBounds();
+          const x = e.clientX - bounds.left;
+          const y = e.clientY - bounds.top;
+          const px = (x / bounds.width) - 0.5;
+          const py = (y / bounds.height) - 0.5;
+
+          targetRotY = baseRotY + px * 18;
+          targetRotX = baseRotX - py * 16;
+        }, { passive: true });
+
+        item.addEventListener('mouseleave', () => {
+          isHovered = false;
+          targetRotX = baseRotX;
+          targetRotY = baseRotY;
+          targetZ = 0;
+        });
+
+        function animate() {
+          if (!isVisibleOnScreen || document.hidden) {
+            animId = null;
+            return;
+          }
+
+          curRotX += (targetRotX - curRotX) * 0.1;
+          curRotY += (targetRotY - curRotY) * 0.1;
+          curZ += (targetZ - curZ) * 0.1;
+
+          card.style.transform = `perspective(1200px) rotateY(${curRotY.toFixed(2)}deg) rotateX(${curRotX.toFixed(2)}deg) rotateZ(${baseRotZ}deg) translateZ(${curZ.toFixed(1)}px)`;
+
+          // If fully settled back to resting state and not hovered, pause loop to save CPU
+          const delta = Math.abs(curRotX - targetRotX) + Math.abs(curRotY - targetRotY) + Math.abs(curZ - targetZ);
+          if (!isHovered && delta < 0.05) {
+            card.style.transform = `perspective(1200px) rotateY(${baseRotY}deg) rotateX(${baseRotX}deg) rotateZ(${baseRotZ}deg) translateZ(0px)`;
+            animId = null;
+            return;
+          }
+
+          animId = requestAnimationFrame(animate);
+        }
+
+        function startAnim() {
+          if (!animId && isVisibleOnScreen && !document.hidden) {
+            animId = requestAnimationFrame(animate);
+          }
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+          isVisibleOnScreen = entries[0].isIntersecting;
+          if (isVisibleOnScreen) startAnim();
+        }, { threshold: 0.05 });
+
+        observer.observe(item);
+
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden && isVisibleOnScreen) startAnim();
+        }, { passive: true });
+      });
+    })();
+
+    /* ────────────────────────────────────────────────────────────
        4. INTERSECTION OBSERVER — REVEAL ANIMATIONS
     ──────────────────────────────────────────────────────────── */
     (function scrollReveals() {
@@ -1593,13 +1768,13 @@
         goToPhrase(nextIndex);
       }
 
-      function goToPhrase(index) {
-        if (index === currentIndex || isAnimating) return;
+      function goToPhrase(index, force) {
+        if (!force && (index === currentIndex || isAnimating)) return;
         isAnimating = true;
 
         const oldSpan = rotator.querySelector('.hl-phrase.is-active') || rotator.firstElementChild;
-        const newText = PHRASES[index];
-        currentIndex = index;
+        const newText = PHRASES[index % PHRASES.length];
+        currentIndex = index % PHRASES.length;
 
         if (prefersReducedMotion) {
           if (oldSpan) oldSpan.textContent = newText;
