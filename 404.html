@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>404 — page not found | aurostron</title>
+  <meta name="description" content="404 — Page not found.">
+  <meta name="robots" content="noindex">
+
+    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+
+    :root {
+      --bg: #fafafa;
+      --text: #0f0f0f;
+      --muted: #666666;
+      --dim: #999999;
+      --line: #e5e5e5;
+      --font-display: 'Archivo', 'Inter', system-ui, -apple-system, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(1.5rem, 5vw, 4rem);
+    }
+
+    ::selection {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    main {
+      max-width: 1050px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr minmax(260px, 420px);
+      gap: clamp(2rem, 5vw, 4rem);
+      align-items: center;
+    }
+
+    .error-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .error-code {
+      font-family: var(--font-display);
+      font-size: clamp(5.5rem, 16vw, 11rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 0.85;
+      text-transform: lowercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .error-desc {
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 32ch;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: #000000;
+      padding: 0.8rem 1.5rem;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: #222222;
+      transform: translateY(-2px);
+    }
+
+    .error-media {
+      width: 100%;
+      max-width: 420px;
+      justify-self: end;
+      overflow: hidden;
+    }
+
+    .error-media img {
+      width: 100%;
+      height: auto;
+      max-width: 420px;
+      display: block;
+      object-fit: contain;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      .error-media {
+        justify-self: start;
+        max-width: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="error-content">
+      <h1 class="error-code">404.</h1>
+      <p class="error-desc">
+        The page you're looking for doesn't exist, was moved, or never did :(
+      </p>
+      <a href="./" class="back-btn">Back to home</a>
+    </div>
+
+    <div class="error-media">
+      <img src="shrug.jpg" alt="Shrug cartoon" width="420" height="420" loading="eager">
+    </div>
+  </main>
+
+</body>
+</html>

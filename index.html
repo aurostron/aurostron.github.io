@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>aurostron's portfolio</title>
+  <meta name="description" content="I'm aurostron. Creator of hoGAMEGATA and OpenLyryc.">
+  <meta name="author" content="AUROSTRON">
+
+  <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #fafafa;
+      --text: #0f0f0f;
+      --muted: #666666;
+      --dim: #999999;
+      --line: #e5e5e5;
+      --font-display: 'Archivo', 'Inter', system-ui, -apple-system, sans-serif;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    /* ─── SLEEK RIGHT-SIDE CURVY BEZIER SCROLL PROGRESS LINE ─── */
+    .scroll-progress-wrap {
+      position: fixed;
+      top: 0;
+      right: clamp(4px, 1.2vw, 12px);
+      width: clamp(20px, 3vw, 34px);
+      height: 100vh;
+      height: 100dvh;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .scroll-progress-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .scroll-track-path {
+      fill: none;
+      stroke: rgba(0, 0, 0, 0.08);
+      stroke-width: 4;
+      stroke-linecap: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .scroll-progress-path {
+      fill: none;
+      stroke: #000000;
+      stroke-width: 4;
+      stroke-linecap: round;
+      vector-effect: non-scaling-stroke;
+      transition: stroke-dashoffset 0.08s ease-out;
+    }
+
+    img, video {
+      max-width: 100%;
+    }
+
+    /*Nav*/
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
+      padding-right: calc(clamp(1.5rem, 5vw, 4rem) + clamp(20px, 3vw, 34px));
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .brand {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+      text-transform: lowercase;
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--text);
+    }
+
+    /*Main Layouts*/
+    main {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      padding-right: calc(clamp(1.5rem, 5vw, 4rem) + clamp(20px, 3vw, 34px));
+      flex: 1;
+      min-width: 0;
+    }
+
+    /*Something */
+    .hero {
+      padding: clamp(4rem, 12vh, 8rem) 0 clamp(4rem, 8vh, 6rem);
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr minmax(260px, 420px);
+      gap: clamp(2rem, 5vw, 5rem);
+      align-items: center;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-meta {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 8vw, 7.5rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      text-transform: lowercase;
+      margin-bottom: 2rem;
+      max-width: 16ch;
+      overflow-wrap: break-word;
+    }
+
+    .hero-sub {
+      font-size: clamp(1.05rem, 2.2vw, 1.6rem);
+      font-weight: 500;
+      color: var(--muted);
+      line-height: 1.45;
+      max-width: 32ch;
+    }
+
+    .hero-sub + .hero-sub {
+      margin-top: 0.75rem;
+    }
+
+    .hero-media {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 1 / 1;
+      border: 1px solid var(--line);
+      overflow: hidden;
+      justify-self: end;
+    }
+
+    .hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /*Projects*/
+    .section {
+      padding: clamp(4rem, 8vh, 7rem) 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-label {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 3rem;
+    }
+
+    .project-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
+    }
+
+    .project-item {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr 1.2fr;
+      gap: clamp(1.5rem, 4vw, 4rem);
+      align-items: start;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .project-num {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--dim);
+    }
+
+    .project-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s ease;
+      overflow-wrap: break-word;
+    }
+
+    .project-item:hover .project-title {
+      color: var(--muted);
+    }
+
+    .project-desc {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 44ch;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .project-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .project-tag::after {
+      content: ' •';
+      color: var(--dim);
+      margin-left: 0.5rem;
+    }
+
+    .project-tag:last-child::after {
+      content: '';
+    }
+
+    .project-media {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #eee;
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .project-media img,
+    .project-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .project-media-hover-trigger {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .project-media-badge {
+      position: absolute;
+      bottom: 0.75rem;
+      right: 0.75rem;
+      background: rgba(0, 0, 0, 0.85);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.25s ease, transform 0.25s ease, background 0.25s ease;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .project-media-hover-trigger:hover .project-media-badge {
+      opacity: 1;
+      transform: translateY(0);
+      background: #000000;
+    }
+
+    /*Vids*/
+    .video-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .video-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .video-overlay-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease, transform 0.2s ease;
+      z-index: 2001;
+    }
+
+    .video-overlay-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+
+    .video-overlay-card {
+      position: relative;
+      width: 90vw;
+      max-width: 1200px;
+      aspect-ratio: 16 / 10;
+      max-height: 85vh;
+      background: #000000;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+      transform: scale(0.96);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .video-overlay.active .video-overlay-card {
+      transform: scale(1);
+    }
+
+    .video-overlay-card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-overlay-hint {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      background: rgba(0, 0, 0, 0.75);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      pointer-events: none;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+
+    /*Logos*/
+    .tech-badges-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .tech-badge-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1.25rem;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .tech-badge-card:hover {
+      border-color: var(--text);
+      transform: translateY(-2px);
+    }
+
+    .tech-badge-card img {
+      height: 24px;
+      width: auto;
+      display: block;
+    }
+
+    /*UE5 Stuff — one-row horizontal scroll strip (scrollbar hidden, curvy progress line instead)*/
+    .learning-strip {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .learning-strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .learning-slide {
+      position: relative;
+      flex: 0 0 min(80%, 620px);
+      scroll-snap-align: center;
+      aspect-ratio: 16 / 9;
+      margin: 0;
+      border: 1px solid var(--line);
+      background: #000000;
+      overflow: hidden;
+    }
+
+    .learning-slide--photo {
+      background: #eeeeee;
+    }
+
+    .learning-slide img,
+    .learning-slide video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .learning-slide--video::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+    }
+
+    .strip-hint {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-align: right;
+    }
+
+    /* ─── MINI CURVY PROGRESS LINE FOR THE STRIP (matches the right-side one) ─── */
+    .strip-progress-wrap {
+      margin-top: 0.75rem;
+      width: 100%;
+      height: 24px;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .strip-progress-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      display: block;
+    }
+
+    /* NOTE: no vector-effect: non-scaling-stroke here on purpose.
+       With non-scaling-stroke, Chrome resolves stroke-dasharray in screen
+       pixels instead of path units, so the dash repeats mid-path and the
+       line splits into segments. In plain user space the math stays exact.
+       stroke-width 5 × 24/30 vertical scale ≈ 4px on screen. */
+    .strip-track-path {
+      fill: none;
+      stroke: rgba(0, 0, 0, 0.08);
+      stroke-width: 5;
+      stroke-linecap: round;
+    }
+
+    .strip-progress-path {
+      fill: none;
+      stroke: #000000;
+      stroke-width: 5;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.08s ease-out;
+    }
+
+    /*More stuff to make it longer*/
+    .about-statement {
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 2rem;
+      max-width: 24ch;
+      overflow-wrap: break-word;
+    }
+
+    .about-bio {
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 52ch;
+    }
+
+    .about-bio p {
+      margin-bottom: 1.25rem;
+    }
+
+    .about-bio strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /*Footer, if you noticed it was there.*/
+    footer {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 4rem clamp(1.5rem, 5vw, 4rem) 1.5rem;
+      padding-right: calc(clamp(1.5rem, 5vw, 4rem) + clamp(20px, 3vw, 34px));
+      padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-signature-wrap {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .footer-signature {
+      height: clamp(1px, 10vw, 50px);
+      width: auto;
+      max-width: 180px;
+      display: block;
+      opacity: 1;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      user-select: none;
+    }
+
+    .footer-signature:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+
+    .footer-copy {
+      font-size: 0.9rem;
+      font-weight: 200;
+      color: var(--dim);
+      width: auto;
+      margin: 0;
+    }
+
+    /*Responsive*/
+    @media (max-width: 860px) {
+      .scroll-progress-wrap {
+        right: 2px;
+        right: calc(2px + env(safe-area-inset-right, 0px));
+        width: 16px;
+        opacity: 0.85;
+      }
+
+      .scroll-track-path,
+      .scroll-progress-path {
+        stroke-width: 3;
+      }
+
+      header {
+        padding: 1.25rem;
+        padding-right: calc(1.25rem + 18px);
+      }
+
+      main {
+        padding: 0 1.25rem;
+        padding-right: calc(1.25rem + 18px);
+      }
+
+      footer {
+        padding: 3rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom, 0px));
+        padding-right: calc(1.25rem + 18px);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 0.75rem;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 3rem 0 2.5rem;
+      }
+
+      .hero-headline {
+        font-size: clamp(2.6rem, 14vw, 4rem);
+        margin-bottom: 1.25rem;
+      }
+
+      .hero-sub {
+        font-size: 1.1rem;
+        max-width: 100%;
+      }
+
+      .hero-media {
+        max-width: 100%;
+        justify-self: stretch;
+      }
+
+      .section {
+        padding: 3rem 0;
+      }
+
+      .section-label {
+        margin-bottom: 2rem;
+      }
+
+      .project-item {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+      }
+
+      .project-num {
+        font-size: 0.85rem;
+      }
+
+      .project-title {
+        font-size: clamp(1.5rem, 7vw, 2rem);
+      }
+
+      .project-desc {
+        font-size: 0.95rem;
+        max-width: 100%;
+      }
+
+      .project-media-hover-trigger:hover .project-media-badge {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      .about-statement {
+        font-size: clamp(1.6rem, 7.5vw, 2.2rem);
+      }
+
+      .tech-badge-card {
+        padding: 0.65rem 1rem;
+        font-size: 0.85rem;
+        max-width: 100%;
+      }
+
+      .learning-slide {
+        flex-basis: 85%;
+      }
+
+      .video-overlay-card {
+        width: 94vw;
+        aspect-ratio: auto;
+        max-height: 70vh;
+      }
+
+      .video-overlay-card video {
+        aspect-ratio: 16 / 10;
+        height: auto;
+        max-height: 70vh;
+      }
+
+      .video-overlay-close {
+        top: calc(1rem + env(safe-area-inset-top, 0px));
+        right: 1rem;
+      }
+
+      .footer-copy {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav {
+        gap: 1.25rem;
+      }
+
+      nav a {
+        font-size: 0.78rem;
+      }
+
+      .brand {
+        font-size: 0.88rem;
+      }
+
+      .hero {
+        padding: 2.5rem 0 2rem;
+      }
+
+      .hero-meta {
+        font-size: 0.78rem;
+        margin-bottom: 1rem;
+      }
+
+      .project-list {
+        gap: 2.75rem;
+      }
+
+      .learning-strip {
+        gap: 0.75rem;
+      }
+
+      .tech-badges-grid {
+        gap: 0.75rem;
+      }
+
+      .video-overlay-hint {
+        font-size: 0.65rem;
+        bottom: 0.75rem;
+        left: 0.75rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .scroll-progress-path {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!--Progress line-->
+  <div class="scroll-progress-wrap" aria-hidden="true">
+    <svg class="scroll-progress-svg" viewBox="0 0 60 1000" preserveAspectRatio="none">
+      <path class="scroll-track-path" fill="none" d="M 30 0 C 60 166 0 333 30 500 C 60 666 0 833 30 1000" />
+      <path id="scrollProgressPath" class="scroll-progress-path" fill="none" d="M 30 0 C 60 166 0 333 30 500 C 60 666 0 833 30 1000" />
+    </svg>
+  </div>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1 class="hero-headline">
+          Hey!
+        </h1>
+        <p class="hero-sub">
+          I'm aurostron/Aurosmit Mahanta.
+        </p>
+        <p class="hero-sub">
+         I make games, webapps & cool software in my free time.
+        </p>
+      </div>
+    </section>
+    
+
+    <!-- Selected Works Section -->
+    <section class="section" id="works">
+      <div class="section-label">My Latest Works</div>
+
+      <div class="project-list">
+        <!-- Project 01: hoGAMEGATA -->
+        <div class="project-item">
+          <span class="project-num">01</span>
+          <div class="project-info">
+            <h2 class="project-title">
+              <a href="https://gamegata.xyz" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">hoGAMEGATA ↗</a>
+            </h2>
+            <p class="project-desc">
+              Open-core database and preservation engine for horror video games. Indexes over 107,000 titles and 68,000 developers with instant client-side search. Free, ad-free, and account-free.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Astro</span>
+              <span class="project-tag">Cloudflare Workers</span>
+              <span class="project-tag">Turso</span>
+              <span class="project-tag">Drizzle ORM</span>
+              <span class="project-tag">React</span>
+            </div>
+          </div>
+          <a href="https://gamegata.xyz" target="_blank" rel="noopener noreferrer" class="project-media">
+            <img src="hogamegata.png" alt="hoGAMEGATA screenshot" width="2560" height="1600" loading="lazy">
+          </a>
+        </div>
+
+        <!-- Project 02: OpenLyryc -->
+        <div class="project-item">
+          <span class="project-num">02</span>
+          <div class="project-info">
+            <h2 class="project-title">
+              <a href="https://openlyryc.pages.dev" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">OpenLyryc ↗</a>
+            </h2>
+            <p class="project-desc">
+              Browser-native synced lyric workstation. Word-by-word karaoke sync, live stage prompter visualizer, and LRCLIB integration, exporting clean files to Enhanced LRC and Apple Music TTML.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Web Audio API</span>
+              <span class="project-tag">TypeScript</span>
+              <span class="project-tag">LRCLIB</span>
+              <span class="project-tag">Cloudflare Pages</span>
+            </div>
+          </div>
+          <a href="https://openlyryc.pages.dev" target="_blank" rel="noopener noreferrer" class="project-media project-media-hover-trigger" id="openlyrycTrigger">
+            <img src="openlyryc.png" alt="OpenLyryc screenshot" width="2560" height="1600" loading="lazy">
+            <span class="project-media-badge">Click me to see some magic!</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Currently Learning Section (UE5 & Blender) -->
+    <section class="section" id="learning">
+      <h2 class="about-statement" style="margin-bottom: 1.5rem;">
+        I'm also learning Unreal Engine 5 and Blender.
+      </h2>
+      <div class="tech-badges-grid" style="margin-bottom: 2rem;">
+        <span class="tech-badge-card">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/unrealengine/unrealengine-original.svg" alt="Unreal Engine 5 logo" width="24" height="24">
+          <span>Unreal Engine 5</span>
+        </span>
+        <span class="tech-badge-card">
+          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/blender/blender-original.svg" alt="Blender logo" width="24" height="24">
+          <span>Blender</span>
+        </span>
+      </div>
+
+      <div class="learning-strip">
+        <div class="learning-slide learning-slide--video">
+          <video autoplay loop muted playsinline preload="metadata" src="last-of-us-remake-ue5.webm"></video>
+        </div>
+        <figure class="learning-slide learning-slide--photo">
+          <img src="last-of-us-remake-screenshot(1).jpg" alt="The Last of Us remake in Unreal Engine 5 — screenshot 1" loading="lazy" decoding="async">
+        </figure>
+        <figure class="learning-slide learning-slide--photo">
+          <img src="last-of-us-remake-screenshot(2).jpg" alt="The Last of Us remake in Unreal Engine 5 — screenshot 2" loading="lazy" decoding="async">
+        </figure>
+        <figure class="learning-slide learning-slide--photo">
+          <img src="last-of-us-remake-screenshot(3).jpg" alt="The Last of Us remake in Unreal Engine 5 — screenshot 3" loading="lazy" decoding="async">
+        </figure>
+        <figure class="learning-slide learning-slide--photo">
+          <img src="last-of-us-remake-screenshot(4).jpg" alt="The Last of Us remake in Unreal Engine 5 — screenshot 4" loading="lazy" decoding="async">
+        </figure>
+      </div>
+      <p class="strip-hint">scroll &rarr;</p>
+      <div class="strip-progress-wrap" id="stripProgressWrap" aria-hidden="true">
+        <svg class="strip-progress-svg" viewBox="0 0 600 30" preserveAspectRatio="none">
+          <path class="strip-track-path" fill="none" d="M 0 15 C 150 30 150 0 300 15 C 450 30 450 0 600 15" />
+          <path id="stripProgressPath" class="strip-progress-path" fill="none" d="M 0 15 C 150 30 150 0 300 15 C 450 30 450 0 600 15" />
+        </svg>
+      </div>
+    </section>
+
+     <!--About -->
+    <section class="section" id="about" style="border-bottom: none;">
+      <h2 class="about-statement">
+        Making stuff since always.
+      </h2>
+      <div class="about-bio">
+        <p>
+          My work lives mostly in the browser. Stuff that gives people something to do, or at least something to have fun with.
+        </p>
+        <p>
+          From indexing over 100K games (verified and unverified) on <strong>hoGAMEGATA</strong> to building a full fledged lyrics software <strong>OpenLyryc</strong> running in your browser! Most of my projects were either a shower thought or frustation to not finding good tools.
+        </p>
+      </div>
+    </section>
+
+    <!-- More Stuff Coming Soon Section -->
+    <section class="section" id="coming-soon" style="border-bottom: none; padding-top: 3.5rem; padding-bottom: 2rem;">
+      <h2 class="about-statement" style="margin-bottom: 0;">
+        More stuff coming soon :)
+      </h2>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-signature-wrap">
+      <img src="signature.svg" alt="Signature" class="footer-signature" width="160" height="42" loading="lazy">
+    </div>
+    <div class="footer-copy">
+      © <span id="yr"></span> aurostron forgot to reserve the rights.
+    </div>
+  </footer>
+
+  <!-- Fullscreen Video Overlay for OpenLyryc -->
+  <div class="video-overlay" id="videoOverlay" aria-hidden="true">
+    <button class="video-overlay-close" id="overlayCloseBtn" aria-label="Close video preview">✕</button>
+    <div class="video-overlay-card">
+      <video id="overlayVideo" loop playsinline src="openlyryc-promo.webm"></video>
+      <div class="video-overlay-hint">(Click anywhere or press ESC to exit)</div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    const progressPath = document.getElementById('scrollProgressPath');
+    let pathLength = 0;
+
+    const initPath = () => {
+      if (progressPath) {
+        pathLength = progressPath.getTotalLength();
+        progressPath.style.strokeDasharray = pathLength;
+        progressPath.style.strokeDashoffset = pathLength;
+      }
+    };
+
+    const updateScrollProgress = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const currentScroll = window.scrollY;
+      const rawPercent = totalScroll > 0 ? (currentScroll / totalScroll) * 100 : 0;
+      const scrollPercent = Math.min(100, Math.max(0, rawPercent));
+      if (progressPath && pathLength > 0) {
+        const drawLength = pathLength * (scrollPercent / 100);
+        progressPath.style.strokeDashoffset = pathLength - drawLength;
+      }
+    };
+
+    initPath();
+    updateScrollProgress();
+
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    window.addEventListener('resize', () => {
+      initPath();
+      updateScrollProgress();
+      updateStripProgress();
+    }, { passive: true });
+
+    // Horizontal strip progress — same dash technique as the right-side line
+    const strip = document.querySelector('.learning-strip');
+    const stripPath = document.getElementById('stripProgressPath');
+    const stripWrap = document.getElementById('stripProgressWrap');
+    let stripLen = 0;
+
+    const updateStripProgress = () => {
+      if (!strip || !stripPath || stripLen <= 0) return;
+      const max = strip.scrollWidth - strip.clientWidth;
+      if (max <= 0) {
+        if (stripWrap) stripWrap.style.opacity = '0';
+        return;
+      }
+      if (stripWrap) stripWrap.style.opacity = '1';
+      const ratio = Math.min(1, Math.max(0, strip.scrollLeft / max));
+      stripPath.style.strokeDashoffset = stripLen - stripLen * ratio;
+    };
+
+    if (stripPath) {
+      stripLen = stripPath.getTotalLength();
+      stripPath.style.strokeDasharray = stripLen;
+      stripPath.style.strokeDashoffset = stripLen;
+    }
+    updateStripProgress();
+
+    if (strip) strip.addEventListener('scroll', updateStripProgress, { passive: true });
+
+    // OpenLyryc Click Video Modal Preview with Audio
+    const trigger = document.getElementById('openlyrycTrigger');
+    const overlay = document.getElementById('videoOverlay');
+    const video = document.getElementById('overlayVideo');
+    const closeBtn = document.getElementById('overlayCloseBtn');
+
+    if (trigger && overlay && video) {
+      const openVideo = (e) => {
+        if (e) e.preventDefault();
+        overlay.classList.add('active');
+        video.muted = false;
+        video.currentTime = 0;
+        video.play().catch(err => {
+          console.log('Audio playback fallback:', err);
+          video.muted = true;
+          video.play();
+        });
+      };
+
+      const closeVideo = () => {
+        overlay.classList.remove('active');
+        video.pause();
+        video.muted = false;
+      };
+
+      trigger.addEventListener('click', openVideo);
+      if (closeBtn) closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeVideo();
+      });
+
+      overlay.addEventListener('click', () => {
+        closeVideo();
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('active')) {
+          closeVideo();
+        }
+      });
+    }
+  </script>
+</body>
+</html>
