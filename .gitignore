@@ -1,3 +1,20 @@
+# Private & Backup Files
 references (private)/
 *.backup.html
 walkthrough.md
+index3.html
+
+# Non-related projects and experiments
+automation/
+kawarp/
+thgtoa/
+thgtoa_headings_dump.txt
+
+# Python & System caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+Thumbs.db
+*.log

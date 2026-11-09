@@ -1,0 +1,22 @@
+[
+  {
+    "id": "hogamegata",
+    "title": "Building hoGAMEGATA: Preserving 100,000+ Horror Games",
+    "date": "October 24, 2026",
+    "readTime": "10 min read",
+    "summary": "Preserving 107,000+ horror video game titles and 68,000 developers with instant client-side search, Astro, and edge SQLite.",
+    "file": "posts/hogamegata.md",
+    "tags": [],
+    "cover": "hogamegata.png"
+  },
+  {
+    "id": "openlyryc",
+    "title": "OpenLyryc: Crafting a Browser-Native Synced Lyrics Workstation",
+    "date": "November 01, 2026",
+    "readTime": "10 min read",
+    "summary": "Why desktop subtitle tools fell short and how we built word-by-word karaoke sync, live stage prompter visualizer, and TTML export in the browser.",
+    "file": "posts/openlyryc.md",
+    "tags": [],
+    "cover": "openlyryc.png"
+  }
+]
